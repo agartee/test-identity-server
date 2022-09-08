@@ -23,7 +23,7 @@ if [ -z "$CURRENT_DOTNET_VERSION" ]
     exit 1
 fi
 
-CURRENT_DOTNET_VERSION="${CURRENT_DOTNET_VERSION/.NET /""}"
+# CURRENT_DOTNET_VERSION="${CURRENT_DOTNET_VERSION/.NET /""}"
 
 if $(dpkg --compare-versions "${CURRENT_DOTNET_VERSION}" "lt" "${MIN_DOTNET_VERSION}")
     then echo -e "${RED}Current .NET version not supported" \
@@ -43,5 +43,7 @@ if [ -z "$CURRENT_DOCKER_VERSION" ]
     then echo -e "${RED}Docker installation not found.${NC}"
     exit 1
 fi
+
+CURRENT_DOCKER_VERSION="${CURRENT_DOCKER_VERSION/Docker version /""}"
 
 echo -e "${GREEN}Docker installation found: ${CURRENT_DOCKER_VERSION}.${NC}"
