@@ -1,9 +1,15 @@
-using Duende.IdentityServer.Models;
-using Duende.IdentityServer.Test;
+using System.Reflection;
 using TestIdentityServer;
+using MediatR;
+using TestIdentityServer.Formatters;
+using TestIdentityServer.Stores;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddControllers(configure: options =>
+{
+    options.InputFormatters.Add(new PlainTextInputFormatter());
+});
 builder.Services.AddIdentityServer(setupAction: options =>
 {
     options.Events.RaiseErrorEvents = true;
@@ -18,18 +24,25 @@ builder.Services.AddIdentityServer(setupAction: options =>
     // https://docs.duendesoftware.com/identityserver/v5/fundamentals/resources/api_scopes
     options.EmitStaticAudienceClaim = true;
 })
-    .AddInMemoryIdentityResources(Config.IdentityResources)
-    .AddInMemoryApiScopes(Config.ApiScopes)
-    .AddInMemoryClients(Config.Clients);
+    .AddClientStore<MyClientStore>()
+    .AddResourceStore<MyResourceStore>();
 
 // excluded for this test:
+// .AddInMemoryIdentityResources(Config.IdentityResources)
+// .AddInMemoryApiScopes(Config.ApiScopes)
+// .AddInMemoryClients(Config.Clients)
 // .AddTestUsers(new List<TestUser>())
 // .AddInMemoryApiResources(new List<ApiResource>())
 
+builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 
 var app = builder.Build();
 
 app.UseHttpsRedirection();
 app.UseIdentityServer();
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

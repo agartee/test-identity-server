@@ -1,4 +1,5 @@
-﻿using Duende.IdentityServer.Models;
+﻿using System.Collections.Concurrent;
+using Duende.IdentityServer.Models;
 
 namespace TestIdentityServer
 {
