@@ -21,8 +21,8 @@ namespace TestIdentityServer.Formatters
         {
             var httpContext = context.HttpContext;
 
-            using (var reader = new StreamReader(httpContext.Request.Body, encoding))
-                return InputFormatterResult.Success(await reader.ReadToEndAsync());
+            using var reader = new StreamReader(httpContext.Request.Body, encoding);
+            return InputFormatterResult.Success(await reader.ReadToEndAsync());
         }
     }
 }

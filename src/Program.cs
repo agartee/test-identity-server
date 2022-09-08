@@ -1,5 +1,4 @@
 using System.Reflection;
-using TestIdentityServer;
 using MediatR;
 using TestIdentityServer.Formatters;
 using TestIdentityServer.Stores;
@@ -24,15 +23,8 @@ builder.Services.AddIdentityServer(setupAction: options =>
     // https://docs.duendesoftware.com/identityserver/v5/fundamentals/resources/api_scopes
     options.EmitStaticAudienceClaim = true;
 })
-    .AddClientStore<MyClientStore>()
-    .AddResourceStore<MyResourceStore>();
-
-// excluded for this test:
-// .AddInMemoryIdentityResources(Config.IdentityResources)
-// .AddInMemoryApiScopes(Config.ApiScopes)
-// .AddInMemoryClients(Config.Clients)
-// .AddTestUsers(new List<TestUser>())
-// .AddInMemoryApiResources(new List<ApiResource>())
+  .AddClientStore<MyClientStore>()
+  .AddResourceStore<MyResourceStore>();
 
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 
